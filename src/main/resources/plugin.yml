@@ -1,0 +1,4 @@
+name: DehydrationPlugin
+version: '${project.version}'
+main: me.sander.dehydrationplugin.DehydrationPlugin
+api-version: '1.20'

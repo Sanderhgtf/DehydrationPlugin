@@ -19,7 +19,7 @@ import java.util.UUID;
 public class WaterDrinkingListener implements Listener {
 
     private static final Map<UUID, Long> cooldowns = new HashMap<>();
-    private static final long COOLDOWN_TIME = 750; // Cooldown time in milliseconds (0.5 seconds)
+    private static final long COOLDOWN_TIME = 550; // Cooldown time in milliseconds (0.6 seconds)
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -28,26 +28,29 @@ public class WaterDrinkingListener implements Listener {
 
         // Check if the player right-clicks with an empty hand
         if (event.getItem() == null && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            // Check if the clicked block is waterlogged
-            if (clickedBlock != null && isWaterlogged(clickedBlock) || event.getClickedBlock().getType() == Material.WATER_CAULDRON) {
-                // Check if the player is on cooldown
-                if (!isOnCooldown(player)) {
-                    // Print "drank" to the console
-                    System.out.println(player.getName() + " drank");
+            // Check if the player has the HYDRATION_LEVEL_KEY
+            if (player.getPersistentDataContainer().has(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER)) {
+                // Check if the clicked block is waterlogged
+                if (clickedBlock != null && isWaterlogged(clickedBlock) || event.getClickedBlock().getType() == Material.WATER_CAULDRON) {
+                    // Check if the player is on cooldown
+                    if (!isOnCooldown(player)) {
+                        // Print "drank" to the console
+                        System.out.println(player.getName() + " drank");
 
-                    // Add a splash particle effect on top of the targeted block
-                    player.getWorld().spawnParticle(Particle.WATER_SPLASH, clickedBlock.getLocation().add(0.5, 1.0, 0.5), 50);
+                        // Add a splash particle effect on top of the targeted block
+                        player.getWorld().spawnParticle(Particle.WATER_SPLASH, clickedBlock.getLocation().add(0.5, 1.0, 0.5), 50);
 
-                    // Play the drinking sound
-                    player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 1.0f);
+                        // Play the drinking sound
+                        player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 1.0f);
 
-                    // Add 2500 to the data container of the player
-                    add2500ToPlayerData(player);
+                        // Add 2500 to the data container of the player
+                        add2500ToPlayerData(player);
 
-                    // Apply a 0.5-second cooldown
-                    applyCooldown(player);
-                } else {
-                    // Player is on cooldown, you can add a message or other logic here
+                        // Apply a 0.5-second cooldown
+                        applyCooldown(player);
+                    } else {
+                        // Player is on cooldown, you can add a message or other logic here
+                    }
                 }
             }
         }

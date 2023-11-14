@@ -10,5 +10,3 @@ commands:
   removedatacontainer:
     description: Remove data container from a player
     usage: /removedatacontainer
-
-

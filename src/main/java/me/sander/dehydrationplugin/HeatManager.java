@@ -12,30 +12,40 @@ public class HeatManager {
     public static void checkSunExposure() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             World world = player.getWorld();
+
+            // Check if it's daytime (between 0 and 12300 ticks)
             if (world.getTime() >= 0 && world.getTime() < 12300) {
-                int blocksInSun = getBlocksInSun(player.getLocation());
+                // Check if the player has the HYDRATION_LEVEL_KEY persistent data container
+                if (hasHydrationLevelContainer(player)) {
+                    int blocksInSun = getBlocksInSun(player.getLocation());
 
-                // Calculate finalDrain
-                int finalDrain = blocksInSun;
+                    // Calculate finalDrain
+                    int finalDrain = blocksInSun;
 
-                // Subtract finalDrain from the player's data container
-                subtractFromPlayerData(player, finalDrain);
+                    // Subtract finalDrain from the player's data container
+                    subtractFromPlayerData(player, finalDrain);
 
-                // Check if the player is in a desert biome during the daytime
-                if (isInDesertBiome(player.getLocation())) {
-                    Bukkit.getServer().getConsoleSender().sendMessage("");
-                    Bukkit.getServer().getConsoleSender().sendMessage("Biome: Desert");
-                    Bukkit.getServer().getConsoleSender().sendMessage("Time: Day");
-                    Bukkit.getServer().getConsoleSender().sendMessage("Sun level = " + blocksInSun);
+                    // Check if the player is in a desert biome during the daytime
+                    if (isInDesertBiome(player.getLocation())) {
+                        Bukkit.getServer().getConsoleSender().sendMessage("");
+                        Bukkit.getServer().getConsoleSender().sendMessage("Biome: Desert");
+                        Bukkit.getServer().getConsoleSender().sendMessage("Time: Day");
+                        Bukkit.getServer().getConsoleSender().sendMessage("Sun level = " + blocksInSun);
 
-                    // Print the persistent data value after subtraction
-                    int dataValue = getPlayerDataValue(player);
-                    Bukkit.getServer().getConsoleSender().sendMessage("Player's data value after subtraction: " + dataValue);
-                } else {
-                    Bukkit.getServer().getConsoleSender().sendMessage("Not in a desert biome during the daytime.");
+                        // Print the persistent data value after subtraction
+                        int dataValue = getPlayerDataValue(player);
+                        Bukkit.getServer().getConsoleSender().sendMessage("Player's data value after subtraction: " + dataValue);
+                    } else {
+                        Bukkit.getServer().getConsoleSender().sendMessage("Not in a desert biome during the daytime.");
+                    }
                 }
             }
         });
+    }
+
+    private static boolean hasHydrationLevelContainer(Player player) {
+        // Check if the player has the HYDRATION_LEVEL_KEY persistent data container
+        return player.getPersistentDataContainer().has(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER);
     }
 
     private static int getBlocksInSun(Location location) {
@@ -73,7 +83,7 @@ public class HeatManager {
         return player.getPersistentDataContainer().get(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER);
     }
 
-    public static void subtractFromPlayerData(Player player, int value) {
+    private static void subtractFromPlayerData(Player player, int value) {
         // Retrieve the current data value from the player's data container
         int currentDataValue = getPlayerDataValue(player);
 
@@ -84,14 +94,8 @@ public class HeatManager {
         player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, newDataValue);
     }
 
-    public static void addToPlayerData(Player player, int value) {
-        // Retrieve the current data value from the player's data container
-        int currentDataValue = getPlayerDataValue(player);
-
-        // Add the specified value to the current data value
-        int newDataValue = currentDataValue + value;
-
-        // Set the updated data value in the player's data container
-        player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, newDataValue);
+    public static int getHydrationLevel(Player player) {
+        return player.getPersistentDataContainer().get(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER);
     }
+
 }

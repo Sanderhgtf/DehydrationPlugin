@@ -1,6 +1,5 @@
 package me.sander.dehydrationplugin;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -11,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class WaterDrinkingListener implements Listener {
                     // Play the drinking sound
                     player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 1.0f);
 
-                    // Add 250 to the data container of the player
-                    HeatManager.addToPlayerData(player, 2500);
+                    // Add 2500 to the data container of the player
+                    add2500ToPlayerData(player);
 
                     // Apply a 0.5-second cooldown
                     applyCooldown(player);
@@ -66,5 +66,16 @@ public class WaterDrinkingListener implements Listener {
     private boolean isOnCooldown(Player player) {
         // Check if the player is on cooldown
         return cooldowns.containsKey(player.getUniqueId()) && cooldowns.get(player.getUniqueId()) > System.currentTimeMillis();
+    }
+
+    private void add2500ToPlayerData(Player player) {
+        // Retrieve the current hydration level from the player's data container
+        int currentHydrationLevel = HeatManager.getHydrationLevel(player);
+
+        // Add 2500 to the current hydration level
+        int newHydrationLevel = currentHydrationLevel + 2500;
+
+        // Set the updated hydration level in the player's data container
+        player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, newHydrationLevel);
     }
 }

@@ -76,9 +76,19 @@ public class WaterDrinkingListener implements Listener {
         int currentHydrationLevel = HeatManager.getHydrationLevel(player);
 
         // Add 2500 to the current hydration level
-        int newHydrationLevel = currentHydrationLevel + 2500;
+        int newHydrationLevel = currentHydrationLevel + 625;
+
+        // Check if the new hydration level exceeds the maximum value of 10000
+        if (newHydrationLevel > 3500) {
+            // Set the hydration level to the maximum value
+            newHydrationLevel = 3500;
+
+            // Send the player a message
+            player.sendMessage("Your thirst is quenched!");
+        }
 
         // Set the updated hydration level in the player's data container
         player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, newHydrationLevel);
     }
+
 }

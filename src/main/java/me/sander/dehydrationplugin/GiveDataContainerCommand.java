@@ -18,9 +18,9 @@ public class GiveDataContainerCommand implements CommandExecutor {
                 player.sendMessage("You already have a hydration level container.");
             } else {
                 // Give the player a hydration level container starting at 10000
-                player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, 10000);
+                player.getPersistentDataContainer().set(DatapackKey.HYDRATION_LEVEL_KEY, PersistentDataType.INTEGER, 3500);
 
-                player.sendMessage("You have been given a hydration level container with a value of 10000.");
+                player.sendMessage("You have been given a hydration level container with a value of 3500.");
             }
         } else {
             sender.sendMessage("This command can only be executed by a player.");

@@ -16,6 +16,6 @@ public class DehydrationPlugin extends JavaPlugin {
         getCommand("givedatacontainer").setExecutor(new GiveDataContainerCommand());
 
         // Schedule the heat manager task
-        getServer().getScheduler().runTaskTimer(this, HeatManager::checkSunExposure, 0, 100);
+        getServer().getScheduler().runTaskTimer(this, HeatManager::checkSunExposure, 0, 200);
     }
 }

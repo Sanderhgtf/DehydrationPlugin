@@ -2,7 +2,13 @@ name: DehydrationPlugin
 version: '1.0'
 main: me.sander.dehydrationplugin.DehydrationPlugin
 api-version: '1.20'
+
 commands:
   givedatacontainer:
-    description: Give a data container to the player
+    description: Give data container to a player
     usage: /givedatacontainer
+  removedatacontainer:
+    description: Remove data container from a player
+    usage: /removedatacontainer
+
+

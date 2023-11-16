@@ -3,6 +3,7 @@ package me.sander.dehydrationplugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DehydrationPlugin extends JavaPlugin {
+    ///
 
     @Override
     public void onEnable() {
